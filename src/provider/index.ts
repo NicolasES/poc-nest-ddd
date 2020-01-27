@@ -5,7 +5,7 @@ const applicationServiceFactory = new ApplicationServiceFactory()
 
 const ApplicationUserServiceProvider = {
     provide: UserService,
-    useFactory: applicationServiceFactory.userService
+    useFactory: () => applicationServiceFactory.getService('userService')
 }
 
 export default [

@@ -11,7 +11,7 @@ export class DomainServiceFactory {
         }
     }
 
-    userService(): UserServiceInterface {
+    private userService(): UserServiceInterface {
         const userRepository = repositoryFactory.getRepository('userRepository')
         return new UserService(userRepository)
     }

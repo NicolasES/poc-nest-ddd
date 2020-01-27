@@ -10,7 +10,7 @@ export class ApplicationServiceFactory {
         }
     }
 
-    userService(): UserService {
-        return new UserService(domainServiceFactory.userService())
+    private userService(): UserService {
+        return new UserService(domainServiceFactory.getService('userService'))
     }
 }
