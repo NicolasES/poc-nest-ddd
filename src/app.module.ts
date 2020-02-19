@@ -5,6 +5,7 @@ import provider from './provider'
 //controllers
 import { UserController } from './interface/http/controllers/user.controller'
 
+
 @Module({
 	imports: [DatabaseModule],
 	controllers: [UserController],

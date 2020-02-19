@@ -1,12 +1,13 @@
-import { UserRepositoryInterface } from '../../../domain/repositories/user.repository.interface'
+import { UserRepositoryInterface } from 'src/domain/repositories/user.repository.interface'
+import { User } from 'src/domain/entities/user'
+import { PaginationDto } from 'src/domain/repositories/pagination.dto'
 import { UserMapper } from '../mappers/user.mapper'
-import { User } from '../../../domain/entities/user'
 import { UserModel } from '../models/user.model'
 
 export class UserRepository implements UserRepositoryInterface {
     constructor(private readonly userMapper: UserMapper) { }
 
-    async find(userId: number): Promise<User> {
+    async find(userId: number): Promise<User | null> {
         let userModel = await UserModel.findByPk(userId)
         if (!userModel) {
             return null
@@ -14,8 +15,17 @@ export class UserRepository implements UserRepositoryInterface {
         return this.userMapper.toDomain(userModel)
     }
 
-    async findAll(): Promise<User[]> {
-        let arrUserModel = await UserModel.findAll()
-        return arrUserModel.map(userModel =>this.userMapper.toDomain(userModel))
+    async findAll(limit: number = 20, offset: number = 0): Promise<PaginationDto<User>> {
+        let queryResult = await UserModel.findAndCountAll({
+            limit,
+            offset
+        })
+
+        return {
+            total: queryResult.count,
+            limit,
+            offset,
+            data: queryResult.rows.map(userModel =>this.userMapper.toDomain(userModel))
+        }
     }
 }

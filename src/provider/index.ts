@@ -1,13 +1,7 @@
-import { UserService } from '../application/services/user.service'
-import { ApplicationServiceFactory } from './factories/application-service.factory'
-
-const applicationServiceFactory = new ApplicationServiceFactory()
-
-const ApplicationUserServiceProvider = {
-    provide: UserService,
-    useFactory: () => applicationServiceFactory.getService('userService')
-}
+import applicationServiceProvider from './application-service.provider'
+import repositoryProvider from './repository.provider'
 
 export default [
-    ApplicationUserServiceProvider
+    ...applicationServiceProvider,
+    ...repositoryProvider,
 ]
