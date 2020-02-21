@@ -15,6 +15,14 @@ export class UserRepository implements UserRepositoryInterface {
         return this.userMapper.toDomain(userModel)
     }
 
+    async findByEmail(email: string): Promise<User | null> {
+        let userModel = await UserModel.findOne({ where: { email } })
+        if (!userModel) {
+            return null
+        }
+        return this.userMapper.toDomain(userModel)
+    }
+
     async findAll(limit: number = 20, offset: number = 0): Promise<PaginationDto<User>> {
         let queryResult = await UserModel.findAndCountAll({
             limit,
